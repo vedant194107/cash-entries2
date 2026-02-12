@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="logo-section">
+            <div class="logo-box">
+                <div class="logo-icon">
+                    <div class="logo-square"></div>
+                    <div class="logo-square"></div>
+                    <div class="logo-square"></div>
+                </div>
+                <span class="logo-text">Dayala's</span>
+                <span class="registered">®</span>
+            </div>
+        </div>
+
+        <div class="nav-items">
+            <div class="dropdown">
+                <a href="#">Master ▾</a>
+                <div class="dropdown-content">
+                    <a href="contactbook.html">Contact Book</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">Entry ▾</a>
+                <div class="dropdown-content">
+                    <a href="entry.html">Cash Entry</a>
+                    <a href="customer-ledger.html">Customer Ledger</a>
+                    <a href="pattycash.html">Patty Cash</a>
+                </div>
+            </div>
+
+            <a href="reports.html">Reports</a>
+        </div>
+    </nav>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="top-actions">
+            <button class="btn btn-add">＋ Add New</button>
+            <a class="button" href="index.html">← Back</a>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+    <!-- DRAWER -->
+
+
+    
+
+    <div class="drawer" id="drawer">
+
+        <div class="drawer-header">
+            <h3>Add New Cash Entry</h3>
+            <span class="close-btn" onclick="closeDrawer()">×</span>
+        </div>
+
+        <div class="drawer-body">
+
+            <!-- 🔥 CONTACT NAME DROPDOWN -->
+            <div class="form-group">
+                <label>* Remarks</label>
+                <textarea id="remarks" placeholder="Enter here..." required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>* Amount</label>
+                    <input type="text" id="amount" placeholder="₹" required>
+                </div>
+
+                <div class="form-group">
+                    <label>* Transaction Type</label>
+                    <select id="type" required>
+                        <option value="">Select</option>
+                        <option>Credit</option>
+                        <option>Debit</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- <div class="form-group">
+                <label>* Transaction Sub Type</label>
+                <select id="subType" required>
+                    <option value="">Select a Transaction Sub-Type</option>
+                    <option>Customer Payment</option>
+                    <option>Customer Advance</option>
+                    <option>Supplier Payment</option>
+                    <option>Supplier Advance</option>
+                    <option>Expense</option>
+                </select>
+            </div> -->
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>* Date</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <!-- <div class="form-group">
+                    <label>Ref No</label>
+                    <input type="text" id="refNo" placeholder="Enter here...">
+                </div> -->
+            </div>
+
+            
+
+        </div>
+
+        <div class="drawer-footer">
+            <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+            <button class="btn-create" id="submitBtn" type="button">Create</button>
+        </div>
+
+    </div>
+
+    <!-- LIST -->
+    <div class="list-card">
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <!-- <th>Contact Name</th> -->
+                         <!-- <th>Remarks</th> -->
+                        <th>Remarks</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                        <th>Closing Balance</th>
+                        
+                        <th>Action</th>
+                        <!-- <th>Sub Type</th> -->
+                    </tr>
+                </thead>
+                <tbody id="entryTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="pattycash.js"></script>
+</body>
+
+</html>

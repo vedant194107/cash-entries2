@@ -1,0 +1,769 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+     background-color: #f3f4f6;
+ }
+
+ .navbar {
+     background-color: #1a2332;
+     color: white;
+     padding: 12px 24px;
+     display: flex;
+     align-items: center;
+     justify-content: space-between;
+ }
+
+ .logo-section {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+ }
+
+
+ .logo-box {
+     background-color: white;
+     border-radius: 4px;
+     padding: 4px 8px;
+     display: flex;
+     align-items: center;
+     gap: 4px;
+ }
+
+ .logo-icon {
+     width: 24px;
+     height: 24px;
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 2px;
+ }
+
+ .logo-square {
+     width: 10px;
+     height: 10px;
+     background-color: #1a2332;
+ }
+
+ .logo-text {
+     color: #1a2332;
+     font-weight: bold;
+     font-size: 18px;
+ }
+
+ .registered {
+     font-size: 12px;
+     color: white;
+ }
+
+ .nav-items {
+     display: flex;
+     align-items: center;
+     gap: 32px;
+ }
+
+ .nav-items button {
+     background: none;
+     border: none;
+     color: #9ca3af;
+     font-size: 14px;
+     font-weight: 500;
+     cursor: pointer;
+     transition: color 0.2s;
+ }
+
+ .nav-items button:hover {
+     color: white;
+ }
+
+ .right-section {
+     display: flex;
+     align-items: center;
+     gap: 16px;
+ }
+
+ .year-dropdown {
+     background-color: white;
+     color: #1f2937;
+     padding: 6px 16px;
+     border-radius: 4px;
+     border: none;
+     font-size: 14px;
+     font-weight: 500;
+     cursor: pointer;
+     outline: none;
+ }
+
+ .year-dropdown:focus {
+     outline: 2px solid #3b82f6;
+ }
+
+ .profile-btn {
+     width: 36px;
+     height: 36px;
+     border-radius: 50%;
+     background-color: #9ca3af;
+     border: none;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: background-color 0.2s;
+ }
+
+ .profile-btn:hover {
+     background-color: #6b7280;
+ }
+
+ .profile-icon {
+     width: 20px;
+     height: 20px;
+     stroke: white;
+     fill: none;
+     stroke-width: 2;
+ }
+
+ .nav-items a {
+     color: #f3f4f6;
+     text-decoration: none;
+ }
+
+ .nav-items a {
+     background: none;
+     border: none;
+     color: #9ca3af;
+     font-size: 14px;
+     font-weight: 500;
+     cursor: pointer;
+     transition: color 0.2s;
+ }
+
+ .nav-items a {
+     position: relative;
+     color: #cbd5e1;
+     text-decoration: none;
+     padding: 8px 14px;
+     font-weight: 500;
+ }
+
+ .nav-items a:hover {
+     color: #ffffff;
+ }
+
+ /* ACTIVE PAGE STYLE */
+ .nav-items a.active {
+     color: #ffffff;
+ }
+
+ .nav-items a.active::after {
+     content: "";
+     position: absolute;
+     left: 10%;
+     bottom: -6px;
+     width: 80%;
+     height: 3px;
+     background-color: #3b82f6;
+     border-radius: 2px;
+ }
+
+ .dropdown {
+     position: relative;
+ }
+
+ .dropdown>a {
+     padding: 10px;
+     display: inline-block;
+ }
+
+ /* Dropdown box */
+ .dropdown-content {
+     display: none;
+     position: absolute;
+     top: 100%;
+     /* IMPORTANT */
+     left: 0;
+     background: #ffffff;
+     min-width: 180px;
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+     border-radius: 6px;
+     z-index: 999;
+ }
+
+ /* Hover fix */
+ .dropdown:hover .dropdown-content {
+     display: block;
+     color: #000;
+
+ }
+
+ /* Make dropdown area hover-safe */
+ .dropdown-content a {
+     display: block;
+     padding: 12px 15px;
+     color: #000;
+     text-decoration: none;
+ }
+
+ .dropdown-content a:hover {
+     background: #f1f5f9;
+     color: #000;
+     /* FORCE black on hover */
+ }
+
+ .top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f1f8ff;
+    padding: 12px 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    font-size: 16px;
+    color: #6b7280;
+}
+
+.breadcrumb span {
+    color: #2563eb;
+}
+
+/* Buttons */
+.top-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    border: none;
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-add {
+    background: #1e88ff;
+    color: #fff;
+}
+
+.btn-back {
+    background: #6b7280;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.button {
+    text-decoration: none;
+    background: #6b7280;     /* grey background */
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    z-index: 99;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -50%;
+    width: 50%;
+    height: 100%;
+    background: #fff;
+    transition: 0.3s ease;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer.open {
+    right: 0;
+}
+
+.drawer-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-btn {
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.drawer-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.drawer-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+textarea {
+    resize: none;
+}
+
+.btn-cancel {
+    background: #fff;
+    border: 1px solid red;
+    color: red;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.btn-create {
+    background: #22c55e;
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    z-index: 99;
+}
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -50%;
+    width: 50%;
+    height: 100%;
+    background: #fff;
+    transition: 0.3s ease;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer.open {
+    right: 0;
+}
+
+
+.list-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.list1-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   CONTACT BOOK TABLE MOBILE
+========================= */
+@media (max-width: 768px) {
+
+    .list1-card {
+        padding: 10px;
+        overflow-x: auto;
+    }
+
+    .list1-card table {
+        width: 100%;
+        min-width: 800px; /* keeps structure safe */
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .list1-card th,
+    .list1-card td {
+        padding: 8px;
+        white-space: nowrap;
+    }
+
+}
+
+
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 40px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 16px;
+}
+
+.tab {
+    padding: 10px 0;
+    color: #2563eb;
+    cursor: pointer;
+}
+
+.tab.active {
+    font-weight: 600;
+    border-bottom: 3px solid #2563eb;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.date-range {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #d1d5db;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.date-range input {
+    border: none;
+    outline: none;
+    width: 100px;
+}
+
+.check {
+    font-size: 14px;
+}
+
+/* Buttons */
+.btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn.search {
+    background: #1e88ff;
+    color: #fff;
+}
+
+.btn.excel {
+    background: #22c55e;
+    color: #fff;
+}
+
+.btn.clear {
+    background: #fff;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+}
+
+/* Table */
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+thead {
+    background: #f9fafb;
+}
+
+th, td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    white-space: nowrap;
+}
+
+tbody tr:hover {
+    background: #f1f5f9;
+}
+
+.highlight {
+    background: #eaf7ff;
+}
+
+
+/* ================= CONTACT BOOK DRAWER (ADD AT END) ================= */
+
+/* Make drawer wider like screenshot */
+.drawer.large {
+    width: 70%;
+    right: -70%;
+}
+
+.drawer.large.open {
+    right: 0;
+}
+
+/* Improve spacing like UI screenshot */
+.drawer-body .form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.drawer-body input,
+.drawer-body select,
+.drawer-body textarea {
+    background: #fff;
+}
+
+/* Better textarea height */
+.drawer-body textarea {
+    min-height: 80px;
+}
+
+/* Contact table header like screenshot */
+.list-card table thead th {
+    font-weight: 600;
+    color: #111827;
+}
+
+/* Action column ready (future icons) */
+th.action,
+td.action {
+    text-align: center;
+}
+
+
+
+/* ===== CUSTOMER LEDGER TOP BAR ===== */
+
+.ledger-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.ledger-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ledger-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Mobile support */
+@media (max-width: 768px) {
+    .ledger-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ledger-right {
+        align-self: flex-end;
+    }
+}
+
+/* ===== LEDGER FILTER INSIDE LIST ===== */
+
+.ledger-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+
+
+/* ================= LEDGER MOBILE RESPONSIVE ================= */
+
+.ledger-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+/* Navbar mobile fix */
+@media (max-width: 768px) {
+
+    .navbar {
+        flex-wrap: wrap;
+        padding: 10px;
+    }
+
+    .logo-section {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .nav-items {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .ledger-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ledger-filters button {
+        align-self: flex-end;
+    }
+}
+
+
+
+.delete-btn {
+    background: #ff4d4d;
+    border: none;
+    padding: 6px 10px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+}
+
+
+/* =========================
+   MOBILE SMALL POPUP MODE
+========================= */
+@media (max-width: 768px) {
+
+    /* Dark overlay */
+    .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 999;
+    }
+
+    /* Convert drawer into small popup */
+    .drawer {
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 90% !important;
+        max-width: 350px;
+        height: auto !important;
+        max-height: 90vh;
+        border-radius: 12px !important;
+        padding: 20px;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        display: none;
+    }
+
+    .overlay {
+        display: none;
+    }
+
+    /* Remove slide animation if you had */
+    .drawer.open {
+        right: auto !important;
+        display: block;
+    }
+
+    /* Make form vertical */
+    .form-row {
+        flex-direction: column !important;
+    }
+
+    .form-group {
+        width: 100% !important;
+        margin-bottom: 12px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    /* Footer buttons stacked */
+    .drawer-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-cancel,
+    .btn-create {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Ledger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR (SAME AS ENTRY PAGE) ================= -->
+<nav class="navbar">
+    <div class="logo-section">
+        <div class="logo-box">
+            <div class="logo-icon">
+                <div class="logo-square"></div>
+                <div class="logo-square"></div>
+                <div class="logo-square"></div>
+            </div>
+            <span class="logo-text">Dayala's</span>
+            <span class="registered">®</span>
+        </div>
+    </div>
+
+    <div class="nav-items">
+        <div class="dropdown">
+            <a href="#">Master ▾</a>
+            <div class="dropdown-content">
+                <a href="contactbook.html">Contact Book</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <a href="#">Entry ▾</a>
+            <div class="dropdown-content">
+                <a href="entry.html">Cash Entry</a>
+                <a href="customer-ledger.html">Customer Ledger</a>
+                    <a href="pattycash.html">Patty Cash</a>
+            </div>
+        </div>
+
+        <a href="reports.html">Reports</a>
+    </div>
+</nav>
+
+<!-- ================= TOP BAR (ONLY BACK BUTTON) ================= -->
+<div class="top-bar">
+    <div class="top-actions" style="justify-content:flex-end;">
+        <a class="button" href="index.html">← Back</a>
+    </div>
+</div>
+
+<!-- ================= LIST CARD ================= -->
+<div class="list-card">
+
+    <!-- FILTERS -->
+    <div class="ledger-filters">
+        <label>Customer:</label>
+        <select id="customerSelect">
+            <option value="">Select Customer</option>
+        </select>
+
+        <label>Date Range:</label>
+        <input type="date" id="fromDate">
+        <span>~</span>
+        <input type="date" id="toDate">
+
+        <button class="btn search">Search</button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Particular</th>
+                    <th>Debit</th>
+                    <th>Credit</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody id="ledgerTableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script src="customer-ledger.js"></script>
+</body>
+</html>
