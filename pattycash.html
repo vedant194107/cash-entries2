@@ -48,6 +48,12 @@
             align-items: center;
         }
 
+        .btn,
+        .options-menu button {
+            touch-action: manipulation;
+        }
+
+
         .vcash-left {
             text-align: left;
         }
@@ -234,7 +240,7 @@
                 display: none;
             }
 
-            
+
 
             /* Show options */
             .mobile-options {
@@ -567,7 +573,7 @@
             };
 
             function deleteAll() {
-                if (!confirm("Delete all entries?")) return;
+                if (!window.confirm("Delete all entries?")) return;
                 localStorage.removeItem(STORAGE_KEY);
                 filteredEntries = null;
                 loadEntries();
@@ -727,6 +733,15 @@
         }
 
         window.toggleOptions = toggleOptions;
+        window.toggleOptions = toggleOptions;
+        window.closeOptions = closeOptions;
+
+        function deleteAll() {
+            if (!window.confirm("Delete all entries?")) return;
+
+            localStorage.removeItem("pettyCashEntries_v1");
+            location.reload(); // force refresh
+        }
 
 
     </script>
