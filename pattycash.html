@@ -360,6 +360,7 @@
                 <div class="options-menu" id="optionsMenu">
                     <button onclick="openFilter()">Filter</button>
                     <button id="deleteAllBtn">Delete All</button>
+
                     <!-- <button onclick="downloadPDF()">Download PDF</button> -->
                 </div>
             </div>
@@ -503,220 +504,206 @@
             menu.style.display = menu.style.display === "flex" ? "none" : "flex";
         }
 
-        deleteBtn.addEventListener("click", function () {
+        document.addEventListener("DOMContentLoaded", function () {
 
-            if (!editId) return;
+            const STORAGE_KEY = "pettyCashEntries_v1";
 
-            if (!window.confirm("Delete entry?")) return;
+            const addBtns = document.querySelectorAll(".btn-add");
+            const drawer = document.getElementById("drawer");
+            const overlay = document.getElementById("overlay");
+            const submitBtn = document.getElementById("submitBtn");
+            const deleteBtn = document.getElementById("deleteBtn");
+            const tableBody = document.getElementById("entryTableBody");
 
-            let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            let editId = null;
+            let filteredEntries = null;
 
-            entries = entries.filter(e => e.id !== editId);
+            /* ADD NEW */
+            addBtns.forEach(btn => {
+                btn.onclick = () => {
+                    clearForm();
+                    editId = null;
+                    submitBtn.innerText = "Create";
+                    deleteBtn.style.display = "none";
+                    drawer.classList.add("open");
+                    overlay.style.display = "block";
+                };
+            });
 
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-            editId = null;
-
-            closeDrawer();
-            loadEntries();
-        });
-
-        function deleteAll() {
-            console.log("DELETE CLICKED");
-
-            if (!window.confirm("Delete all entries?")) return;
-
-            localStorage.removeItem("pettyCashEntries_v1");
-
-            loadEntries();
-        }
-
-
-
-        /* ADD NEW */
-        addBtns.forEach(btn => {
-            btn.onclick = () => {
-                clearForm();
+            window.closeDrawer = () => {
+                drawer.classList.remove("open");
+                overlay.style.display = "none";
                 editId = null;
                 submitBtn.innerText = "Create";
                 deleteBtn.style.display = "none";
-                drawer.classList.add("open");
-                overlay.style.display = "block";
+                clearForm();
             };
-        });
 
-        window.closeDrawer = () => {
-            drawer.classList.remove("open");
-            overlay.style.display = "none";
-            editId = null;
-            submitBtn.innerText = "Create";
-            deleteBtn.style.display = "none";
-            clearForm();
-        };
+            /* SAVE */
+            submitBtn.onclick = function () {
 
-        /* SAVE */
-        submitBtn.onclick = function () {
+                const amount = parseFloat(
+                    document.getElementById("amount").value.replace(/[^0-9.]/g, "")
+                );
 
-            const amount = parseFloat(
-                document.getElementById("amount").value.replace(/[^0-9.]/g, "")
-            );
+                const type = document.getElementById("type").value;
+                const remarks = document.getElementById("remarks").value.trim();
+                const date = document.getElementById("date").value;
 
-            const type = document.getElementById("type").value;
-            const remarks = document.getElementById("remarks").value.trim();
-            const date = document.getElementById("date").value;
+                if (!amount || !type || !remarks || !date) {
+                    alert("Please fill all fields");
+                    return;
+                }
 
-            if (!amount || !type || !remarks || !date) {
-                alert("Please fill all fields");
-                return;
-            }
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-            let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                if (editId) {
+                    entries = entries.map(e => e.id === editId ? { ...e, amount, type, remarks, date } : e);
+                } else {
+                    entries.push({ id: Date.now(), amount, type, remarks, date });
+                }
 
-            if (editId) {
-                entries = entries.map(e => e.id === editId ? { ...e, amount, type, remarks, date } : e);
-            } else {
-                entries.push({ id: Date.now(), amount, type, remarks, date });
-            }
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-            filteredEntries = null;
-            loadEntries();
-            closeDrawer();
-        };
-
-        /* DELETE SINGLE (FIXED) */
-        deleteBtn.onclick = function () {
-
-            if (!editId) return;
-
-            if (!window.confirm("Delete entry?")) return;
-
-            let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-            entries = entries.filter(e => e.id !== editId);
-
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-
-            editId = null;
-            filteredEntries = null;
-
-            closeDrawer();
-            loadEntries();
-        };
-
-        /* DELETE ALL (FIXED) */
-        function deleteAll() {
-
-            if (!window.confirm("Delete all entries?")) return;
-
-            localStorage.removeItem(STORAGE_KEY);
-
-            filteredEntries = null;
-            loadEntries();
-        }
-
-        /* PDF */
-        function downloadPDF() {
-            setTimeout(() => {
-                window.print();
-            }, 200);
-        }
-
-        /* FILTER */
-        function openFilter() {
-            document.getElementById("filterDrawer").classList.add("open");
-            overlay.style.display = "block";
-        }
-
-        function closeFilter() {
-            document.getElementById("filterDrawer").classList.remove("open");
-            overlay.style.display = "none";
-        }
-
-        function applyFilter() {
-
-            const from = document.getElementById("fromDate").value;
-            const to = document.getElementById("toDate").value;
-
-            let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-            if (!from && !to) {
                 filteredEntries = null;
-            } else {
-                filteredEntries = entries.filter(e => {
-                    return (!from || e.date >= from) && (!to || e.date <= to);
+                loadEntries();
+                closeDrawer();
+            };
+
+            /* DELETE SINGLE (FIXED) */
+            deleteBtn.onclick = function () {
+
+                if (!editId) return;
+
+                const isOk = confirm("Delete entry?");
+                if (!isOk) return;
+
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+                entries = entries.filter(e => e.id !== editId);
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+                editId = null;
+                filteredEntries = null;
+
+                closeDrawer();
+                loadEntries();
+            };
+
+            /* DELETE ALL (FIXED) */
+            function deleteAll() {
+
+                if (!window.confirm("Delete all entries?")) return;
+
+                localStorage.removeItem(STORAGE_KEY);
+
+                filteredEntries = null;
+                loadEntries();
+            }
+
+            /* PDF */
+            function downloadPDF() {
+                setTimeout(() => {
+                    window.print();
+                }, 200);
+            }
+
+            /* FILTER */
+            function openFilter() {
+                document.getElementById("filterDrawer").classList.add("open");
+                overlay.style.display = "block";
+            }
+
+            function closeFilter() {
+                document.getElementById("filterDrawer").classList.remove("open");
+                overlay.style.display = "none";
+            }
+
+            function applyFilter() {
+
+                const from = document.getElementById("fromDate").value;
+                const to = document.getElementById("toDate").value;
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+                if (!from && !to) {
+                    filteredEntries = null;
+                } else {
+                    filteredEntries = entries.filter(e => {
+                        return (!from || e.date >= from) && (!to || e.date <= to);
+                    });
+                }
+
+                loadEntries();
+                closeFilter();
+            }
+
+            /* LOAD */
+            function loadEntries() {
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+                if (filteredEntries) entries = filteredEntries;
+
+                document.getElementById("totalEntries").innerText = entries.length;
+
+                tableBody.innerHTML = "";
+
+                let balanceMap = [];
+                let balance = 0;
+
+                entries.forEach(e => {
+                    balance += e.type === "Credit" ? e.amount : -e.amount;
+                    balanceMap.push(balance);
+                });
+
+                /* TOTAL BALANCE */
+                const balanceEl = document.getElementById("totalBalance");
+                balanceEl.innerText = balance.toFixed(2);
+                balanceEl.style.color = balance >= 0 ? "#16a34a" : "#dc2626";
+
+                let grouped = {};
+
+                entries.forEach((entry, index) => {
+                    if (!grouped[entry.date]) grouped[entry.date] = [];
+                    grouped[entry.date].push({ entry, balance: balanceMap[index] });
+                });
+
+                const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+
+                sortedDates.forEach(date => {
+
+                    const dateDiv = document.createElement("div");
+                    dateDiv.className = "vcash-date-header";
+                    dateDiv.innerText = formatDate(date);
+
+                    tableBody.appendChild(dateDiv);
+
+                    grouped[date].slice().reverse().forEach(item => {
+                        addRow(item.entry, item.balance);
+                    });
                 });
             }
 
-            loadEntries();
-            closeFilter();
-        }
-
-        /* LOAD */
-        function loadEntries() {
-
-            let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-            if (filteredEntries) entries = filteredEntries;
-
-            document.getElementById("totalEntries").innerText = entries.length;
-
-            tableBody.innerHTML = "";
-
-            let balanceMap = [];
-            let balance = 0;
-
-            entries.forEach(e => {
-                balance += e.type === "Credit" ? e.amount : -e.amount;
-                balanceMap.push(balance);
-            });
-
-            /* TOTAL BALANCE */
-            const balanceEl = document.getElementById("totalBalance");
-            balanceEl.innerText = balance.toFixed(2);
-            balanceEl.style.color = balance >= 0 ? "#16a34a" : "#dc2626";
-
-            let grouped = {};
-
-            entries.forEach((entry, index) => {
-                if (!grouped[entry.date]) grouped[entry.date] = [];
-                grouped[entry.date].push({ entry, balance: balanceMap[index] });
-            });
-
-            const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
-
-            sortedDates.forEach(date => {
-
-                const dateDiv = document.createElement("div");
-                dateDiv.className = "vcash-date-header";
-                dateDiv.innerText = formatDate(date);
-
-                tableBody.appendChild(dateDiv);
-
-                grouped[date].slice().reverse().forEach(item => {
-                    addRow(item.entry, item.balance);
+            function formatDate(dateStr) {
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
                 });
-            });
-        }
+            }
 
-        function formatDate(dateStr) {
-            const d = new Date(dateStr);
-            return d.toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric'
-            });
-        }
+            function addRow(entry, balance) {
 
-        function addRow(entry, balance) {
+                const div = document.createElement("div");
+                div.className = "vcash-card";
 
-            const div = document.createElement("div");
-            div.className = "vcash-card";
+                const isCredit = entry.type === "Credit";
 
-            const isCredit = entry.type === "Credit";
-
-            div.innerHTML = `
+                div.innerHTML = `
                 <div class="vcash-left">
                     <div class="vcash-remarks">${entry.remarks}</div>
                 </div>
@@ -730,43 +717,43 @@
                 </div>
             `;
 
-            div.onclick = () => openEdit(entry);
-            tableBody.appendChild(div);
-        }
+                div.onclick = () => openEdit(entry);
+                tableBody.appendChild(div);
+            }
 
-        function openEdit(entry) {
+            function openEdit(entry) {
 
-            document.getElementById("remarks").value = entry.remarks;
-            document.getElementById("amount").value = entry.amount;
-            document.getElementById("type").value = entry.type;
-            document.getElementById("date").value = entry.date;
+                document.getElementById("remarks").value = entry.remarks;
+                document.getElementById("amount").value = entry.amount;
+                document.getElementById("type").value = entry.type;
+                document.getElementById("date").value = entry.date;
 
-            editId = entry.id;
+                editId = entry.id;
 
-            submitBtn.innerText = "Update";
-            deleteBtn.style.display = "inline-block";
+                submitBtn.innerText = "Update";
+                deleteBtn.style.display = "inline-block";
 
-            drawer.classList.add("open");
-            overlay.style.display = "block";
-        }
+                drawer.classList.add("open");
+                overlay.style.display = "block";
+            }
 
-        function clearForm() {
-            document.getElementById("remarks").value = "";
-            document.getElementById("amount").value = "";
-            document.getElementById("type").value = "";
-            document.getElementById("date").value = "";
-        }
+            function clearForm() {
+                document.getElementById("remarks").value = "";
+                document.getElementById("amount").value = "";
+                document.getElementById("type").value = "";
+                document.getElementById("date").value = "";
+            }
 
-        loadEntries();
+            loadEntries();
 
-        /* GLOBAL FIX FOR APK */
-        window.deleteAll = deleteAll;
-        window.downloadPDF = downloadPDF;
-        window.openFilter = openFilter;
-        window.closeFilter = closeFilter;
-        window.applyFilter = applyFilter;
-        window.toggleOptions = toggleOptions;
-        window.closeOptions = closeOptions;
+            /* GLOBAL FIX FOR APK */
+            window.deleteAll = deleteAll;
+            window.downloadPDF = downloadPDF;
+            window.openFilter = openFilter;
+            window.closeFilter = closeFilter;
+            window.applyFilter = applyFilter;
+            window.toggleOptions = toggleOptions;
+            window.closeOptions = closeOptions;
 
         });
 
