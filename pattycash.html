@@ -368,7 +368,7 @@
 
             <!-- NEW BUTTONS -->
             <button class="btn btn-filter" onclick="openFilter()">Filter</button>
-            <button class="btn btn-danger" id="deleteAllBtnDesktop">Delete All</button>
+            <button class="btn btn-danger" id="deleteAllDesktop">Delete All</button>
             <!-- <button class="btn btn-pdf" onclick="downloadPDF()">PDF</button> -->
 
             <a class="button" href="index.html">← Back</a>
@@ -506,10 +506,6 @@
 
         document.addEventListener("DOMContentLoaded", function () {
 
-            document.getElementById("deleteAllDesktop").addEventListener("click", deleteAll);
-            document.getElementById("deleteAllBtn").addEventListener("click", deleteAll);
-
-
             const STORAGE_KEY = "pettyCashEntries_v1";
 
             const addBtns = document.querySelectorAll(".btn-add");
@@ -521,6 +517,20 @@
 
             let editId = null;
             let filteredEntries = null;
+
+            /* DELETE ALL BUTTON BINDING */
+            const deleteDesktopBtn = document.getElementById("deleteAllDesktop");
+            const deleteMobileBtn = document.getElementById("deleteAllBtn");
+
+            if (deleteDesktopBtn) {
+                deleteDesktopBtn.addEventListener("click", deleteAll);
+            }
+
+            if (deleteMobileBtn) {
+                deleteMobileBtn.addEventListener("click", deleteAll);
+            }
+
+
 
             /* ADD NEW */
             addBtns.forEach(btn => {
@@ -598,10 +608,7 @@
             /* DELETE ALL (FIXED) */
             function deleteAll() {
 
-                console.log("DELETE ALL CLICKED"); // debug
-
-                /*const ok = confirm("Delete all entries?");
-                if (!ok) return;*/
+                console.log("Delete All Clicked"); // Debug
 
                 let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
@@ -610,13 +617,14 @@
                     return;
                 }
 
+                // Direct delete (APK safe)
                 localStorage.removeItem(STORAGE_KEY);
 
                 filteredEntries = null;
 
                 loadEntries();
 
-                alert("All entries deleted");
+                
             }
 
 
