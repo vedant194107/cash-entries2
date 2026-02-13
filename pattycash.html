@@ -506,6 +506,10 @@
 
         document.addEventListener("DOMContentLoaded", function () {
 
+            document.getElementById("deleteAllDesktop").addEventListener("click", deleteAll);
+            document.getElementById("deleteAllBtn").addEventListener("click", deleteAll);
+
+
             const STORAGE_KEY = "pettyCashEntries_v1";
 
             const addBtns = document.querySelectorAll(".btn-add");
@@ -594,13 +598,27 @@
             /* DELETE ALL (FIXED) */
             function deleteAll() {
 
-// Direct delete
+                console.log("DELETE ALL CLICKED"); // debug
+
+                /*const ok = confirm("Delete all entries?");
+                if (!ok) return;*/
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+                if (entries.length === 0) {
+                    alert("No entries to delete");
+                    return;
+                }
 
                 localStorage.removeItem(STORAGE_KEY);
 
                 filteredEntries = null;
+
                 loadEntries();
+
+                alert("All entries deleted");
             }
+
 
             /* PDF */
             function downloadPDF() {
