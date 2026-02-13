@@ -4,12 +4,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entry</title>
+    <title>Cash Entry</title>
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .vcash-container {
+            padding: 10px;
+            padding-bottom: 80px;
+            background: #eef2f6;
+            min-height: 100vh;
+        }
+
+        .vbook-header {
+            background: #1f2a3a;
+            color: white;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            padding: 16px 20px;
+            font-weight: 600;
+            border-radius: 12px;
+            margin: 10px;
+        }
+
+        .vbook-header div:nth-child(1) {
+            text-align: left;
+        }
+
+        .vbook-header div:nth-child(2) {
+            text-align: center;
+        }
+
+        .vbook-header div:nth-child(3) {
+            text-align: right;
+        }
+
+        .vcash-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 16px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            align-items: center;
+        }
+
+        .vcash-left {
+            text-align: left;
+        }
+
+        .vcash-middle {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .vcash-right {
+            text-align: right;
+        }
+
+        .vcash-card:hover {
+            background: #f8fafc;
+        }
+
+        .vcash-remarks {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2a3a;
+        }
+
+        .vcash-balance {
+            text-align: right;
+            font-size: 18px;
+            font-weight: 700;
+            color: #111;
+        }
+
+        .vcash-credit {
+            color: #16a34a;
+        }
+
+        .vcash-debit {
+            color: #dc2626;
+        }
+
+        .btn-delete {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #b91c1c;
+        }
+
+        .vcash-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .vcash-date-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 4px 1px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #616162;
+        }
+
+        .form-group input[type="date"] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+            background: #ffffff;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input[type="date"]:hover {
+            border-color: #9ca3af;
+        }
+
+        .form-group input[type="date"]:focus {
+            border-color: #1f2a3a;
+            box-shadow: 0 0 0 2px rgba(31, 42, 58, 0.1);
+        }
+
+        /* NEW BUTTONS STYLE */
+        .btn-filter {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-pdf {
+            background: #16a34a;
+            color: white;
+        }
+
+        /* OPTIONS BUTTON */
+        .mobile-options {
+            position: relative;
+            display: none;
+        }
+
+        .btn-opt {
+            background: #1f2a3a;
+            color: white;
+        }
+
+        /* PARENT FIX */
+        .mobile-options {
+            position: relative;
+            /* 🔥 IMPORTANT */
+            display: none;
+        }
+
+        /* DROPDOWN */
+        .options-menu {
+            position: absolute;
+            top: 110%;
+            /* below button */
+            left: 0;
+            /* align left with button */
+
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+            display: none;
+            flex-direction: column;
+
+            min-width: 160px;
+            max-width: 90vw;
+            /* prevent overflow */
+
+            padding: 6px 0;
+            z-index: 999;
+
+            overflow: hidden;
+
+            animation: fadeIn 0.2s ease;
+        }
+
+        /* BUTTONS */
+        .options-menu button {
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            text-align: left;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            cursor: pointer;
+            width: 100%;
+
+            transition: all 0.2s ease;
+        }
+
+        /* HOVER */
+        .options-menu button:hover {
+            background: #f1f5f9;
+        }
+
+        /* DIVIDER */
+        .options-menu button:not(:last-child) {
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        @media(max-width:768px) {
+
+            /* Hide desktop buttons */
+            .btn-filter,
+            .btn-danger,
+            .btn-pdf {
+                display: none;
+            }
+
+            
+
+            /* Show options */
+            .mobile-options {
+                display: inline-block;
+                position: relative;
+            }
+
+            /* FIX POSITION ON MOBILE */
+            .options-menu {
+                left: 0;
+                right: auto;
+            }
+        }
+
+        .total-entry-box {
+            margin: 10px;
+            padding: 12px 18px;
+
+            background: #ffffff;
+            border-radius: 12px;
+
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2a3a;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .total-entry-left {
+            text-align: left;
+        }
+
+        .total-entry-center {
+            text-align: center;
+        }
+
+        .total-entry-right {
+            text-align: right;
+        }
+
+        #totalEntries {
+            color: #2563eb;
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
+        #totalBalance {
+            font-weight: 700;
+            margin-left: 6px;
+        }
+
+        @media(max-width:600px) {
+            .total-entry-box {
+                grid-template-columns: 1fr;
+                gap: 6px;
+                text-align: left;
+            }
+
+            .total-entry-center,
+            .total-entry-right {
+                text-align: left;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="logo-section">
@@ -48,36 +346,75 @@
     <div class="top-bar">
         <div class="top-actions">
             <button class="btn btn-add">＋ Add New</button>
+
+            <!-- MOBILE OPTIONS BUTTON -->
+            <div class="mobile-options">
+                <button class="btn btn-opt" onclick="toggleOptions()">Options ▾</button>
+
+                <div class="options-menu" id="optionsMenu">
+                    <button onclick="openFilter()">Filter</button>
+                    <button onclick="deleteAll()">Delete All</button>
+                    <!-- <button onclick="downloadPDF()">Download PDF</button> -->
+                </div>
+            </div>
+
+
+            <!-- NEW BUTTONS -->
+            <button class="btn btn-filter" onclick="openFilter()">Filter</button>
+            <button class="btn btn-danger" onclick="deleteAll()">Delete All</button>
+            <!-- <button class="btn btn-pdf" onclick="downloadPDF()">PDF</button> -->
+
             <a class="button" href="index.html">← Back</a>
         </div>
     </div>
 
+
+
+    <!-- FILTER DRAWER -->
+    <div class="drawer" id="filterDrawer">
+        <div class="drawer-header">
+            <h3>Filter Entries</h3>
+            <span class="close-btn" onclick="closeFilter()">×</span>
+        </div>
+
+        <div class="drawer-body">
+            <div class="form-group">
+                <label>From Date</label>
+                <input type="date" id="fromDate">
+            </div>
+
+            <div class="form-group">
+                <label>To Date</label>
+                <input type="date" id="toDate">
+            </div>
+        </div>
+
+        <div class="drawer-footer">
+            <button class="btn-cancel" onclick="closeFilter()">Cancel</button>
+            <button class="btn-create" onclick="applyFilter()">Apply</button>
+        </div>
+    </div>
+
+    <!-- OVERLAY -->
     <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
 
     <!-- DRAWER -->
-
-
-    
-
     <div class="drawer" id="drawer">
-
         <div class="drawer-header">
             <h3>Add New Cash Entry</h3>
             <span class="close-btn" onclick="closeDrawer()">×</span>
         </div>
 
         <div class="drawer-body">
-
-            <!-- 🔥 CONTACT NAME DROPDOWN -->
             <div class="form-group">
                 <label>* Remarks</label>
-                <textarea id="remarks" placeholder="Enter here..." required></textarea>
+                <textarea id="remarks" required></textarea>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>* Amount</label>
-                    <input type="text" id="amount" placeholder="₹" required>
+                    <input type="text" id="amount" required>
                 </div>
 
                 <div class="form-group">
@@ -90,66 +427,310 @@
                 </div>
             </div>
 
-            <!-- <div class="form-group">
-                <label>* Transaction Sub Type</label>
-                <select id="subType" required>
-                    <option value="">Select a Transaction Sub-Type</option>
-                    <option>Customer Payment</option>
-                    <option>Customer Advance</option>
-                    <option>Supplier Payment</option>
-                    <option>Supplier Advance</option>
-                    <option>Expense</option>
-                </select>
-            </div> -->
-
             <div class="form-row">
                 <div class="form-group">
                     <label>* Date</label>
                     <input type="date" id="date" required>
                 </div>
-
-                <!-- <div class="form-group">
-                    <label>Ref No</label>
-                    <input type="text" id="refNo" placeholder="Enter here...">
-                </div> -->
             </div>
-
-            
-
         </div>
 
         <div class="drawer-footer">
             <button class="btn-cancel" onclick="closeDrawer()">Cancel</button>
+            <button class="btn-delete" id="deleteBtn" style="display:none;">Delete</button>
             <button class="btn-create" id="submitBtn" type="button">Create</button>
         </div>
+    </div>
 
+    <div class="total-entry-box">
+
+        <div class="total-entry-left">
+            Total Entries: <span id="totalEntries">0</span>
+        </div>
+
+        <!-- <div class="total-entry-center">
+            |
+        </div> -->
+
+        <div class="total-entry-right">
+            Total Balance: ₹ <span id="totalBalance">0.00</span>
+        </div>
+
+    </div>
+
+
+
+    <!-- HEADER -->
+    <div class="vbook-header">
+        <div>Remarks</div>
+        <div>Cr / Dr</div>
+        <div>Balance</div>
     </div>
 
     <!-- LIST -->
-    <div class="list-card">
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <!-- <th>Contact Name</th> -->
-                         <!-- <th>Remarks</th> -->
-                        <th>Remarks</th>
-                        <th>Date</th>
-                        <th>Type</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                        <th>Closing Balance</th>
-                        
-                        <th>Action</th>
-                        <!-- <th>Sub Type</th> -->
-                    </tr>
-                </thead>
-                <tbody id="entryTableBody"></tbody>
-            </table>
-        </div>
+    <div class="vcash-container">
+        <div id="entryTableBody" class="vcash-list"></div>
     </div>
 
-    <script src="pattycash.js"></script>
+    <script>
+
+        document.addEventListener("click", function (e) {
+            const menu = document.getElementById("optionsMenu");
+            const btn = document.querySelector(".btn-opt");
+
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.style.display = "none";
+            }
+        });
+
+
+        function closeOptions() {
+            document.getElementById("optionsMenu").style.display = "none";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const STORAGE_KEY = "pettyCashEntries_v1";
+
+            const addBtns = document.querySelectorAll(".btn-add");
+            const drawer = document.getElementById("drawer");
+            const overlay = document.getElementById("overlay");
+            const submitBtn = document.getElementById("submitBtn");
+            const deleteBtn = document.getElementById("deleteBtn");
+            const tableBody = document.getElementById("entryTableBody");
+
+            let editId = null;
+            let filteredEntries = null;
+
+            addBtns.forEach(btn => {
+                btn.onclick = () => {
+                    clearForm();
+                    editId = null;
+                    submitBtn.innerText = "Create";
+                    deleteBtn.style.display = "none";
+                    drawer.classList.add("open");
+                    overlay.style.display = "block";
+                };
+            });
+
+            window.closeDrawer = () => {
+                drawer.classList.remove("open");
+                overlay.style.display = "none";
+                editId = null;
+                submitBtn.innerText = "Create";
+                deleteBtn.style.display = "none";
+                clearForm();
+            };
+
+            submitBtn.onclick = function () {
+
+                const amount = parseFloat(
+                    document.getElementById("amount").value.replace(/[^0-9.]/g, "")
+                );
+
+                const type = document.getElementById("type").value;
+                const remarks = document.getElementById("remarks").value.trim();
+                const date = document.getElementById("date").value;
+
+                if (!amount || !type || !remarks || !date) {
+                    alert("Please fill all fields");
+                    return;
+                }
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+                if (editId) {
+                    entries = entries.map(e => e.id === editId ? { ...e, amount, type, remarks, date } : e);
+                } else {
+                    entries.push({ id: Date.now(), amount, type, remarks, date });
+                }
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+                filteredEntries = null;
+                loadEntries();
+                closeDrawer();
+            };
+
+            deleteBtn.onclick = function () {
+                if (!editId) return;
+                if (!confirm("Delete entry?")) return;
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                entries = entries.filter(e => e.id !== editId);
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+
+                filteredEntries = null;
+                loadEntries();
+                closeDrawer();
+            };
+
+            function deleteAll() {
+                if (!confirm("Delete all entries?")) return;
+                localStorage.removeItem(STORAGE_KEY);
+                filteredEntries = null;
+                loadEntries();
+            }
+
+            function downloadPDF() {
+                setTimeout(() => {
+                    window.print();
+                }, 200);
+            }
+
+            function openFilter() {
+                document.getElementById("filterDrawer").classList.add("open");
+                overlay.style.display = "block";
+            }
+
+            function closeFilter() {
+                document.getElementById("filterDrawer").classList.remove("open");
+                overlay.style.display = "none";
+            }
+
+            function applyFilter() {
+                const from = document.getElementById("fromDate").value;
+                const to = document.getElementById("toDate").value;
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+                if (!from && !to) {
+                    filteredEntries = null;
+                } else {
+                    filteredEntries = entries.filter(e => {
+                        return (!from || e.date >= from) && (!to || e.date <= to);
+                    });
+                }
+
+                loadEntries();
+                closeFilter();
+            }
+
+            function loadEntries() {
+
+
+
+                let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                if (filteredEntries) entries = filteredEntries;
+                document.getElementById("totalEntries").innerText = entries.length;
+
+
+                tableBody.innerHTML = "";
+
+                let balanceMap = [];
+                let balance = 0;
+                document.getElementById("totalBalance").innerText = balance.toFixed(2);
+
+                entries.forEach(e => {
+                    balance += e.type === "Credit" ? e.amount : -e.amount;
+                    balanceMap.push(balance);
+                });
+                document.getElementById("totalBalance").innerText = balance.toFixed(2);
+
+                const balanceEl = document.getElementById("totalBalance");
+
+                balanceEl.innerText = balance.toFixed(2);
+                balanceEl.style.color = balance >= 0 ? "#16a34a" : "#dc2626";
+
+
+
+                let grouped = {};
+
+                entries.forEach((entry, index) => {
+                    if (!grouped[entry.date]) grouped[entry.date] = [];
+                    grouped[entry.date].push({ entry, balance: balanceMap[index] });
+                });
+
+                const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
+
+                sortedDates.forEach(date => {
+                    const dateDiv = document.createElement("div");
+                    dateDiv.className = "vcash-date-header";
+                    dateDiv.innerText = formatDate(date);
+                    tableBody.appendChild(dateDiv);
+
+                    grouped[date].slice().reverse().forEach(item => {
+                        addRow(item.entry, item.balance);
+                    });
+                });
+            }
+
+            function formatDate(dateStr) {
+                const d = new Date(dateStr);
+                return d.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                });
+            }
+
+            function addRow(entry, balance) {
+                const div = document.createElement("div");
+                div.className = "vcash-card";
+
+                const isCredit = entry.type === "Credit";
+
+                div.innerHTML = `
+        <div class="vcash-left">
+            <div class="vcash-remarks">${entry.remarks}</div>
+        </div>
+
+        <div class="vcash-middle ${isCredit ? "vcash-credit" : "vcash-debit"}">
+            ${entry.amount.toFixed(2)}
+        </div>
+
+        <div class="vcash-right vcash-balance">
+            ${balance.toFixed(2)}
+        </div>
+        `;
+
+                div.onclick = () => openEdit(entry);
+                tableBody.appendChild(div);
+            }
+
+            function openEdit(entry) {
+                document.getElementById("remarks").value = entry.remarks;
+                document.getElementById("amount").value = entry.amount;
+                document.getElementById("type").value = entry.type;
+                document.getElementById("date").value = entry.date;
+
+                editId = entry.id;
+                submitBtn.innerText = "Update";
+                deleteBtn.style.display = "inline-block";
+
+                drawer.classList.add("open");
+                overlay.style.display = "block";
+            }
+
+            function clearForm() {
+                document.getElementById("remarks").value = "";
+                document.getElementById("amount").value = "";
+                document.getElementById("type").value = "";
+                document.getElementById("date").value = "";
+            }
+
+            loadEntries();
+
+            // 🔥 IMPORTANT FIX
+            window.deleteAll = deleteAll;
+            window.downloadPDF = downloadPDF;
+            window.openFilter = openFilter;
+            window.closeFilter = closeFilter;
+            window.applyFilter = applyFilter;
+
+        });
+
+        function toggleOptions() {
+            const menu = document.getElementById("optionsMenu");
+            menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+        }
+
+        window.toggleOptions = toggleOptions;
+
+
+    </script>
+
 </body>
 
 </html>

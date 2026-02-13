@@ -9,32 +9,33 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.getElementById("entryTableBody");
 
     let closingBalance = 0;
+    let editId = null; // 🔥 for edit mode
 
-    // 🔹 Ensure drawer hidden on page load
+    // HIDE POPUP INITIALLY
     drawer.classList.remove("open");
     overlay.style.display = "none";
 
-    // 🔹 OPEN POPUP
-    addBtn.addEventListener("click", function () {
+    // OPEN
+    addBtn.onclick = () => {
         drawer.classList.add("open");
         overlay.style.display = "block";
-    });
-
-    // 🔹 CLOSE POPUP
-    window.closeDrawer = function () {
-        drawer.classList.remove("open");
-        overlay.style.display = "none";
     };
 
-    // 🔹 Close when clicking overlay
-    overlay.addEventListener("click", function () {
-        closeDrawer();
-    });
+    // CLOSE
+    window.closeDrawer = () => {
+        drawer.classList.remove("open");
+        overlay.style.display = "none";
+
+        editId = null; // reset edit
+        submitBtn.innerText = "Create";
+    };
+
+    overlay.onclick = () => closeDrawer();
 
     loadEntries();
 
-    // 🔹 CREATE ENTRY
-    submitBtn.addEventListener("click", function () {
+    // SUBMIT (CREATE + UPDATE)
+    submitBtn.onclick = function () {
 
         const amount = parseFloat(
             document.getElementById("amount").value.replace(/[^0-9.]/g, "")
@@ -49,24 +50,41 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const entry = {
-            id: Date.now(),
-            amount,
-            type,
-            remarks,
-            date
-        };
+        let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-        const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        entries.push(entry);
+        if (editId) {
+            // 🔥 UPDATE
+            entries = entries.map(e => {
+                if (e.id === editId) {
+                    return { ...e, amount, type, remarks, date };
+                }
+                return e;
+            });
+
+            editId = null;
+            submitBtn.innerText = "Create";
+
+        } else {
+            // 🔥 CREATE
+            const entry = {
+                id: Date.now(),
+                amount,
+                type,
+                remarks,
+                date
+            };
+
+            entries.push(entry);
+        }
+
         localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
         loadEntries();
         closeDrawer();
         clearForm();
-    });
+    };
 
-    // 🔹 ADD ROW
+    // ADD ROW
     function addRow(entry, balance) {
 
         const tr = document.createElement("tr");
@@ -79,16 +97,15 @@ document.addEventListener("DOMContentLoaded", function () {
             <td>${entry.type === "Credit" ? "₹" + entry.amount : "-"}</td>
             <td>₹${balance.toFixed(2)}</td>
             <td>
-                <button class="delete-btn" data-id="${entry.id}">
-                    Delete
-                </button>
+                <button class="edit-btn" data-id="${entry.id}">Edit</button>
+                <button class="delete-btn" data-id="${entry.id}">Delete</button>
             </td>
         `;
 
         tableBody.appendChild(tr);
     }
 
-    // 🔹 LOAD DATA
+    // LOAD DATA
     function loadEntries() {
 
         const entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -108,21 +125,43 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 🔹 DELETE (Event Delegation - Cleaner)
+    // DELETE + EDIT
     tableBody.addEventListener("click", function (e) {
 
+        const id = Number(e.target.getAttribute("data-id"));
+
+        let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        // DELETE
         if (e.target.classList.contains("delete-btn")) {
 
-            const id = Number(e.target.getAttribute("data-id"));
-
-            let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
             entries = entries.filter(entry => entry.id !== id);
-
             localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
             loadEntries();
         }
+
+        // EDIT
+        if (e.target.classList.contains("edit-btn")) {
+
+            const entry = entries.find(e => e.id === id);
+            if (!entry) return;
+
+            // fill form
+            document.getElementById("remarks").value = entry.remarks;
+            document.getElementById("amount").value = entry.amount;
+            document.getElementById("type").value = entry.type;
+            document.getElementById("date").value = entry.date;
+
+            editId = id;
+
+            submitBtn.innerText = "Update";
+
+            // open popup
+            drawer.classList.add("open");
+            overlay.style.display = "block";
+        }
+
     });
 
     function clearForm() {

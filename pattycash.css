@@ -1,0 +1,145 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #e6e0e8;
+}
+
+/* NAVBAR */
+.navbar {
+    background: #0f172a;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-items a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+/* HEADER */
+.header {
+    background: #d10a4a;
+    color: white;
+    text-align: center;
+    padding: 12px;
+}
+
+/* ENTRY LIST */
+.entry-list {
+    padding: 10px;
+    margin-bottom: 80px;
+}
+
+/* CARD */
+.entry-card {
+    background: white;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.remark {
+    font-size: 16px;
+}
+
+.right {
+    text-align: right;
+}
+
+.amount {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.credit {
+    color: green;
+}
+
+.debit {
+    color: red;
+}
+
+.balance {
+    font-weight: bold;
+}
+
+/* POPUP */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 90%;
+    max-width: 300px;
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.popup input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#saveBtn {
+    width: 100%;
+    padding: 10px;
+    background: #3498db;
+    color: white;
+    border: none;
+}
+
+/* TOGGLE */
+.toggle {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.toggle button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+}
+
+.toggle .active {
+    background: green;
+    color: white;
+}
+
+/* BOTTOM BAR */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #6b2a8f;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.bottom-bar button {
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.cash-in { background: green; }
+.cash-out { background: red; }
+.options { background: blue; }
+
+

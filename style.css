@@ -767,3 +767,21 @@ td.action {
     }
 
 }
+
+
+.edit-btn {
+    background: #22c55e; /* green */
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background: #16a34a;
+}
+
+
+
