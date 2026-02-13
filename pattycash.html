@@ -575,8 +575,7 @@
 
                 if (!editId) return;
 
-                const isOk = confirm("Delete entry?");
-                if (!isOk) return;
+                // Direct delete without confirm
 
 
                 let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -595,7 +594,7 @@
             /* DELETE ALL (FIXED) */
             function deleteAll() {
 
-                if (!window.confirm("Delete all entries?")) return;
+// Direct delete
 
                 localStorage.removeItem(STORAGE_KEY);
 
