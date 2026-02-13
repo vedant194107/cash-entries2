@@ -484,14 +484,23 @@
             const menu = document.getElementById("optionsMenu");
             const btn = document.querySelector(".btn-opt");
 
+            if (!menu || !btn) return;
+
             if (!menu.contains(e.target) && !btn.contains(e.target)) {
                 menu.style.display = "none";
             }
         });
 
-
         function closeOptions() {
-            document.getElementById("optionsMenu").style.display = "none";
+            const menu = document.getElementById("optionsMenu");
+            if (menu) menu.style.display = "none";
+        }
+
+        function toggleOptions() {
+            const menu = document.getElementById("optionsMenu");
+            if (!menu) return;
+
+            menu.style.display = menu.style.display === "flex" ? "none" : "flex";
         }
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -508,6 +517,7 @@
             let editId = null;
             let filteredEntries = null;
 
+            /* ADD NEW */
             addBtns.forEach(btn => {
                 btn.onclick = () => {
                     clearForm();
@@ -528,6 +538,7 @@
                 clearForm();
             };
 
+            /* SAVE */
             submitBtn.onclick = function () {
 
                 const amount = parseFloat(
@@ -558,33 +569,45 @@
                 closeDrawer();
             };
 
+            /* DELETE SINGLE (FIXED) */
             deleteBtn.onclick = function () {
+
                 if (!editId) return;
-                if (!confirm("Delete entry?")) return;
+
+                if (!window.confirm("Delete entry?")) return;
 
                 let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
                 entries = entries.filter(e => e.id !== editId);
 
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
 
+                editId = null;
                 filteredEntries = null;
-                loadEntries();
+
                 closeDrawer();
+                loadEntries();
             };
 
+            /* DELETE ALL (FIXED) */
             function deleteAll() {
+
                 if (!window.confirm("Delete all entries?")) return;
+
                 localStorage.removeItem(STORAGE_KEY);
+
                 filteredEntries = null;
                 loadEntries();
             }
 
+            /* PDF */
             function downloadPDF() {
                 setTimeout(() => {
                     window.print();
                 }, 200);
             }
 
+            /* FILTER */
             function openFilter() {
                 document.getElementById("filterDrawer").classList.add("open");
                 overlay.style.display = "block";
@@ -596,6 +619,7 @@
             }
 
             function applyFilter() {
+
                 const from = document.getElementById("fromDate").value;
                 const to = document.getElementById("toDate").value;
 
@@ -613,33 +637,29 @@
                 closeFilter();
             }
 
+            /* LOAD */
             function loadEntries() {
 
-
-
                 let entries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-                if (filteredEntries) entries = filteredEntries;
-                document.getElementById("totalEntries").innerText = entries.length;
 
+                if (filteredEntries) entries = filteredEntries;
+
+                document.getElementById("totalEntries").innerText = entries.length;
 
                 tableBody.innerHTML = "";
 
                 let balanceMap = [];
                 let balance = 0;
-                document.getElementById("totalBalance").innerText = balance.toFixed(2);
 
                 entries.forEach(e => {
                     balance += e.type === "Credit" ? e.amount : -e.amount;
                     balanceMap.push(balance);
                 });
-                document.getElementById("totalBalance").innerText = balance.toFixed(2);
 
+                /* TOTAL BALANCE */
                 const balanceEl = document.getElementById("totalBalance");
-
                 balanceEl.innerText = balance.toFixed(2);
                 balanceEl.style.color = balance >= 0 ? "#16a34a" : "#dc2626";
-
-
 
                 let grouped = {};
 
@@ -651,9 +671,11 @@
                 const sortedDates = Object.keys(grouped).sort((a, b) => new Date(b) - new Date(a));
 
                 sortedDates.forEach(date => {
+
                     const dateDiv = document.createElement("div");
                     dateDiv.className = "vcash-date-header";
                     dateDiv.innerText = formatDate(date);
+
                     tableBody.appendChild(dateDiv);
 
                     grouped[date].slice().reverse().forEach(item => {
@@ -672,36 +694,39 @@
             }
 
             function addRow(entry, balance) {
+
                 const div = document.createElement("div");
                 div.className = "vcash-card";
 
                 const isCredit = entry.type === "Credit";
 
                 div.innerHTML = `
-        <div class="vcash-left">
-            <div class="vcash-remarks">${entry.remarks}</div>
-        </div>
+                <div class="vcash-left">
+                    <div class="vcash-remarks">${entry.remarks}</div>
+                </div>
 
-        <div class="vcash-middle ${isCredit ? "vcash-credit" : "vcash-debit"}">
-            ${entry.amount.toFixed(2)}
-        </div>
+                <div class="vcash-middle ${isCredit ? "vcash-credit" : "vcash-debit"}">
+                    ${entry.amount.toFixed(2)}
+                </div>
 
-        <div class="vcash-right vcash-balance">
-            ${balance.toFixed(2)}
-        </div>
-        `;
+                <div class="vcash-right vcash-balance">
+                    ${balance.toFixed(2)}
+                </div>
+            `;
 
                 div.onclick = () => openEdit(entry);
                 tableBody.appendChild(div);
             }
 
             function openEdit(entry) {
+
                 document.getElementById("remarks").value = entry.remarks;
                 document.getElementById("amount").value = entry.amount;
                 document.getElementById("type").value = entry.type;
                 document.getElementById("date").value = entry.date;
 
                 editId = entry.id;
+
                 submitBtn.innerText = "Update";
                 deleteBtn.style.display = "inline-block";
 
@@ -718,33 +743,19 @@
 
             loadEntries();
 
-            // 🔥 IMPORTANT FIX
+            /* GLOBAL FIX FOR APK */
             window.deleteAll = deleteAll;
             window.downloadPDF = downloadPDF;
             window.openFilter = openFilter;
             window.closeFilter = closeFilter;
             window.applyFilter = applyFilter;
+            window.toggleOptions = toggleOptions;
+            window.closeOptions = closeOptions;
 
         });
 
-        function toggleOptions() {
-            const menu = document.getElementById("optionsMenu");
-            menu.style.display = menu.style.display === "flex" ? "none" : "flex";
-        }
-
-        window.toggleOptions = toggleOptions;
-        window.toggleOptions = toggleOptions;
-        window.closeOptions = closeOptions;
-
-        function deleteAll() {
-            if (!window.confirm("Delete all entries?")) return;
-
-            localStorage.removeItem("pettyCashEntries_v1");
-            location.reload(); // force refresh
-        }
-
-
     </script>
+
 
 </body>
 
